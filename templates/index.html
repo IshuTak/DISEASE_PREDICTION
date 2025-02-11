@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-heartbeat logo-icon"></i>
+            <span>Disease Prediction System</span>
+        </div>
+        <div class="navbar-menu">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#how-it-works">How it Works</a>
+            <button id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <i class="fas fa-heartbeat logo-icon"></i>
+            <i class="fas fa-times close-menu"></i>
+        </div>
+        <div class="mobile-menu-items">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#how-it-works">How it Works</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <div class="hero-content">
+                <h1>AI-Powered Disease Prediction</h1>
+                <p>Get instant predictions based on your symptoms using advanced machine learning</p>
+                <button class="cta-button" onclick="scrollToPredictor()">
+                    Try Now <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Prediction Form -->
+        <section class="prediction-section" id="predictor">
+            <div class="prediction-form">
+                <h2>Select Your Symptoms</h2>
+                <form id="symptomForm">
+                    <!-- Symptom Categories -->
+                    <div class="symptom-categories">
+                        <button type="button" class="category-btn active" data-category="all">
+                            <i class="fas fa-list-ul"></i> All
+                        </button>
+                        <button type="button" class="category-btn" data-category="common">
+                            <i class="fas fa-star"></i> Common
+                        </button>
+                        <button type="button" class="category-btn" data-category="pain">
+                            <i class="fas fa-head-side-virus"></i> Pain
+                        </button>
+                        <button type="button" class="category-btn" data-category="respiratory">
+                            <i class="fas fa-lungs"></i> Respiratory
+                        </button>
+                    </div>
+
+                    <!-- Symptom Search -->
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="symptom-search" placeholder="Search symptoms...">
+                    </div>
+
+                    <!-- Symptom Selection -->
+                    <div class="form-group">
+                        <select id="symptoms" multiple="multiple">
+                            {% for symptom in symptoms %}
+                            <option value="{{ symptom }}">{{ symptom | replace('_', ' ') | title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="predict-btn">
+                        <span>Predict Disease</span>
+                        <i class="fas fa-microscope"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results hidden">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay hidden">
+            <div class="loader">
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                </svg>
+                <p>Analyzing Symptoms...</p>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <h2>About the System</h2>
+            <div class="about-content">
+                <div class="about-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>AI-Powered</h3>
+                    <p>Using advanced machine learning algorithms to predict diseases based on symptoms</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-database"></i>
+                    <h3>Comprehensive</h3>
+                    <p>Trained on extensive medical data covering various diseases and symptoms</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Reliable</h3>
+                    <p>High accuracy predictions with detailed explanations and precautions</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="how-it-works-section">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>Select Symptoms</h3>
+                    <p>Choose from the comprehensive list of symptoms you're experiencing</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-cogs"></i>
+                    <h3>AI Analysis</h3>
+                    <p>Our AI system analyzes the symptoms using advanced algorithms</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-file-medical-alt"></i>
+                    <h3>Get Results</h3>
+                    <p>Receive detailed predictions with descriptions and precautions</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-heartbeat logo-icon"></i>
+                <h3>Disease Prediction System</h3>
+            </div>
+            <div class="footer-section">
+                <h4>Important Note</h4>
+                <p>This system is for reference only. Always consult healthcare professionals for medical advice.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Disease Prediction System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
